@@ -52,20 +52,4 @@ http://127.0.0.1:5000/records/download?age=<int:age>
 
 Структура проекта
 
-SimpleSalaryProject/
-│
-├── app/
-│   ├── __init__.py         # Создание приложения Flask
-│   ├── models.py           # SQLAlchemy модели
-│   ├── schemas.py          # Marshmallow схемы
-│   ├── routes.py           # API endpoints (Blueprint)
-│   ├── crud.py             # Логика add/edit/delete/list
-│   ├── report.py           # Генерация Excel
-│   └── utils.py            # Утилиты
-│
-├── tests/
-│   └── test_routes.py      # Тесты API
-│
-├── migrations/             # Flask-Migrate файлы
-├── requirements.txt
-└── README.md               #  Документация
+![Структура проекта](images/file_structure.png)
