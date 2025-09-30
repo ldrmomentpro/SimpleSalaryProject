@@ -1,71 +1,71 @@
-Flask CRUD + Excel API
+# Flask CRUD + Excel API
 
-Этот проект – REST API на Flask для управления записями в таблице поддержкой:
-•	Добавление, редактирование, удаление и листинга данных
-•	Скачивания данных в Excel
+Этот проект — REST API на Flask для управления записями в таблице с поддержкой:  
+- Добавления, редактирования, удаления и листинга данных  
+- Скачивания данных в Excel  
 
+## Стек технологий
 
-Стек технологий
+- **Python** – язык программирования  
+- **Flask** — веб-фреймворк  
+- **SQLAlchemy** — работа с БД  
+- **Flask-Migrate** — миграции  
+- **Marshmallow** — валидация данных  
+- **Pandas** — генерация Excel  
+- **pytest / unittest** — тестирование API  
 
-•	Python – язык программирования
-•	Flask — веб-фреймворк
-•	SQLAlchemy — работа с БД
-•	Flask-Migrate — миграции
-•	Marshmallow — валидация данных
-•	Pandas — генерация Excel
-•	[pytest / unittest] — тестирование API
+## Установка и запуск
 
-
-Установка и запуск
-
-1)	Клонируй репозиторий:
+1. Клонируй репозиторий:  
+```bash
 git clone https://github.com/ldrmomentpro/SimpleSalaryProject.git
-2)	Установи зависимости:
+```
+Установи зависимости:
+
+```bash
 pip install -r requirements.txt
-3)	Создай базу данных и сделай миграции:
+```
+Создай базу данных и сделай миграции:
+
+```bash
 flask db init
 flask db migrate -m "initial"
 flask db upgrade
-4)	Запусти сервер:
+```
+Запусти сервер:
+
+```bash
 flask run
-5)	API будет доступно по адресу:
+```
+API будет доступно по адресу:
+
 http://127.0.0.1:5000/
 
+Примеры API запросов
 
-Примеры API запросов:
+Добавление записи
+- POST http://127.0.0.1:5000/records/add
 
-1)	Добавление:
-POST http://127.0.0.1:5000/records/add
-2)	Редактирование:
-PUT http://127.0.0.1:5000/records/edit/<id>
-3)	Удаление:
-DELETE http://127.0.0.1:5000/records/delete/<id>
-4)	Получение списка всей записей:
-GET http://127.0.0.1:5000/records/list
-5)	Скачивание в Excel:
-http://127.0.0.1:5000/records/download
-Если нужна фильтрация по возрасту:
-http://127.0.0.1:5000/records/download?age=<int:age>
-Запуск тестов
-•	pytest -v
+Редактирование записи
+- PUT http://127.0.0.1:5000/records/edit/<id>
 
+Удаление записи
+- DELETE http://127.0.0.1:5000/records/delete/<id>
+
+Получение списка всех записей
+- GET http://127.0.0.1:5000/records/list
+
+Скачивание данных в Excel
+- GET http://127.0.0.1:5000/records/download
+  
+С фильтрацией по возрасту:
+- GET http://127.0.0.1:5000/records/download?age=<int:age>
+  
+  Запуск тестов
+```bash
+pytest -v
+```
 
 Структура проекта
 
-SimpleSalaryProject/
-│
-├── app/
-│   ├── __init__.py         # Создание приложения Flask
-│   ├── models.py           # SQLAlchemy модели
-│   ├── schemas.py          # Marshmallow схемы
-│   ├── routes.py           # API endpoints (Blueprint)
-│   ├── crud.py             # Логика add/edit/delete/list
-│   ├── report.py           # Генерация Excel
-│   └── utils.py            # Утилиты
-│
-├── tests/
-│   └── test_routes.py      # Тесты API
-│
-├── migrations/             # Flask-Migrate файлы
-├── requirements.txt
-└── README.md               #  Документация
+![Структура проекта](images/file_structure.png)
