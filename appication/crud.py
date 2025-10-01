@@ -1,20 +1,9 @@
-import logging
-
 from sqlalchemy.exc import SQLAlchemyError
-
 from .models import MyTable
 from .schemas import MyTableSchema
 from .extensions import db
 from marshmallow import ValidationError
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(name)s: %(message)s')
-
-file_handler = logging.FileHandler('logs/crud.log', encoding='utf-8')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+from .logsetting import logger
 
 schema = MyTableSchema()
 
@@ -58,6 +47,7 @@ def edit(id, data):
         return None, e.messages
     except SQLAlchemyError as err:
         logger.error(f"Ошибка БД при редактировании записи ID={id}: {err}", exc_info=True)
+        return None, {"db_error": str(err)}
 
 def list_records():
     records = MyTable.query.all()
