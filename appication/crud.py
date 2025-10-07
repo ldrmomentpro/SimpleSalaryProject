@@ -1,4 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.exceptions import NotFound
+
 from .models import MyTable
 from .schemas import MyTableSchema
 from .extensions import db
@@ -28,13 +30,16 @@ def delete(id):
         db.session.commit()
         logger.info(f"Запись ID={id} удалена, данные={schema.dump(record)}")
         return record, None
+    except NotFound:
+        logger.warning(f"Запись с ID={id} не найдена при удалении")
+        return None, {"error": f"Запись с id={id} не найдена"}
     except SQLAlchemyError as err:
         logger.error(f"Ошибка БД при удалении ID={id}: {err}", exc_info=True)
         return None, {"db_error": str(err)}
 
 def edit(id, data):
-    record = MyTable.query.get_or_404(id)
     try:
+        record = MyTable.query.get_or_404(id)
         edited_data = schema.load(data, partial=True)
         for key, value in edited_data.__dict__.items():
             if key != "_sa_instance_state":
@@ -42,12 +47,19 @@ def edit(id, data):
         db.session.commit()
         logger.info(f"Запись ID={id} успешна обновлена: {schema.dump(data)}")
         return record, None
+    except NotFound:
+        logger.warning(f"Запись с ID={id} не найдена при редактировании")
+        return None, {"error": f"Запись с id={id} не найдена"}
     except ValidationError as e:
         logger.error(f"Ошибка редактирования записи ID={id}: {e}", exc_info=True)
         return None, e.messages
     except SQLAlchemyError as err:
         logger.error(f"Ошибка БД при редактировании записи ID={id}: {err}", exc_info=True)
         return None, {"db_error": str(err)}
+    except Exception as err:
+        logger.error(f"Неожиданная ошибка при редактировании ID={id}: {err}", exc_info=True)
+        return None, {"unexpected_error": str(err)}
+
 
 def list_records():
     records = MyTable.query.all()
