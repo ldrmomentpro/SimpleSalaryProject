@@ -1,0 +1,2 @@
+cluster.name: "docker-cluster"
+discovery.type: single-node
